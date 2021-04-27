@@ -1,0 +1,70 @@
+/***************SUM OF DISTINCT ELEMENTS (ARRAY SOLUTION)*******************/
+
+ALGORITHM SumDistinctElementsWithArray
+VAR SET1: ARRAY_OF INTEGER := [3, 1, 7, 9];
+VAR SET2: ARRAY_OF INTEGER := [2, 4, 1, 9, 3];
+VAR SUM: INTEGER := 0;
+VAR j:INTEGER;
+VAR i: INTEGER;
+
+BEGIN
+    FOR i FROM 0 TO SET1.length STEP 1 Do
+        j := 0;
+        WHILE (j < SET2.length) Do
+            IF (SET1[i] NOT= SET2[j] AND j = SET2.length -1) THEN
+                SUM := SUM +SET1[i];
+                ELSE IF (SET1[i] = SET2[j]) THEN
+                    break;
+                END_IF
+            END_IF
+            j := j+1;
+        END_WHILE
+    END_FOR
+
+    FOR i FROM 0 TO SET2.length STEP 1 Do
+        j := 0;
+        WHILE (j < SET1.length) Do
+            IF (SET2[i] NOT= SET1[j] AND j = SET1.length -1) THEN
+                SUM := SUM +SET2[i];
+                ELSE IF (SET2[i] = SET1[j]) THEN
+                    break;
+                END_IF
+            END_IF
+            j := j+1;
+        END_WHILE
+    END_FOR
+
+    read(SUM);
+END
+
+/********************SUM OF DISTINCT ELEMENTS (HASH_TABLE SOLUTION)*********************/
+
+ALGORITHM SumDistinctElementsWithHashTable
+VAR SET1: ARRAY_OF INTEGER [4] := [3, 1, 7, 9];
+VAR SET2: ARRAY_OF INTEGER [5] := [2, 4, 1, 9, 3];
+VAR SET3: ARRAY_OF INTEGER [SET1.length + SET2.length] := [];
+VAR hTab : HASH_TABLE<INTEGER,INTEGER>;
+VAR SUM: INTEGER := 0;
+VAR COUNT: INTEGER;
+VAR j:INTEGER;
+VAR i:INTEGER;
+
+BEGIN
+    SET3 = SET1.concat(SET2)
+    FOR i FROM 0 TO SET3.length STEP 1 Do
+        IF (hTab.lookup(SET3[i] = true)) THEN
+            COUNT := hTab.get(SET3[i]);
+            hTab.insert(SET3[i], COUNT+1);
+        ELSE
+            hTab.insert(SET3[i], 1);
+        END_IF
+    END_FOR
+
+    SET<INTEGER> SET := hTab.keySET();
+    Iterator<INTEGER> iterator := SET.iterator();
+    WHILE (itarator.key = 1)
+        SUM := SUM + itarator.value;
+    END_WHILE
+
+    read(SUM);
+END
